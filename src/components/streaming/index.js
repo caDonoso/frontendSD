@@ -177,7 +177,6 @@ class streaming extends Component {
                     })
                     }
                   </Input>
-                  
                 </FormGroup>
               </div>
               <div className="row"> 
