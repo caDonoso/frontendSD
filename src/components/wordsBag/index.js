@@ -24,7 +24,7 @@ class wordsBag extends Component {
   }
 
   getWords() {
-    axios.get(process.env.REACT_APP_API_URL+"words/")
+    axios.get('http://40.121.62.100:9000/words/')
       .then(result => {
         this.setState({
           isLoading: false,
@@ -43,7 +43,7 @@ class wordsBag extends Component {
 
   add(){
     var newWord = "#" + this.newWordInput.value;
-    axios.post(process.env.REACT_APP_API_URL+"words/", {value: newWord})
+    axios.post('http://40.121.62.100:9000/words/', {value: newWord})
       .then(result =>{
         this.newWordInput.value = "";
         this.getWords();
@@ -56,7 +56,7 @@ class wordsBag extends Component {
 
   delete(word){
     if (window.confirm('Está seguro que desea eliminar la palabra de la bolsa?')) {
-      axios.delete(process.env.REACT_APP_API_URL+"words/", {data: {value: word}})
+      axios.delete('http://40.121.62.100:9000/words/', {data: {value: word}})
         .then(result =>
           this.getWords()
         )

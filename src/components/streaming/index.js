@@ -61,6 +61,7 @@ class streaming extends Component {
   refreshPageIn(seconds){
     if(this.state.count === seconds){
       this.getTweets();
+      this.getWords();
       clearInterval(this.myInterval)
       this.setState({
         count: 0
@@ -185,7 +186,7 @@ class streaming extends Component {
                     type="select"
                     onChange={this.onChangeWordSelected}
                   >
-                   
+                    return(<option key={0} value={1}> {"Ninguno"} </option>)
                     {this.state.words.map( (word,key) => {
                       return(<option key={key + 1} value={key + 2}> {word.value} </option>)
                     })
