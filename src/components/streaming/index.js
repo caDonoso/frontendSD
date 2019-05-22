@@ -76,7 +76,7 @@ class streaming extends Component {
 
   getTweets() {
     if(this.state.wordSelected === ''){ //Se buscan todos los tweets
-      axios.get(process.env.REACT_APP_API_URL+"tweets/")
+      axios.get('http://40.121.62.100:9000/tweets/20')
         .then(result => {
           this.setState({
             isLoading: false,
@@ -94,20 +94,40 @@ class streaming extends Component {
         })
     }
     else{ //Se buscan los tweets en base a una palabra en especifico
-
+      let palabra = this.state.wordSelected;
+      if(palabra[0] === '#'){
+        palabra = palabra.split("#")[1];
+      }
+      axios.get('http://40.121.62.100:9000/tweets/by-word/'+ palabra + "/20")
+        .then(result => {
+          this.setState({
+            isLoading: false,
+            tweets: result.data,
+            count: 0,
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({
+            isLoading: false,
+            tweets: []
+          });
+          alert("No ha sido posible conectarse al servidor para obtener los Tweets.");
+        })
     }
   }
 
   getWords() {
-    axios.get(process.env.REACT_APP_API_URL+"words/")
-      .then(result => {
+    console.log("URL: " + process.env.REACT_APP_API_URL+"/words/");
+    axios.get('http://40.121.62.100:9000/words/')
+      .then(response => {
         this.setState({
           isLoading: false,
-          words: result.data
+          words: response.data
         });
       })
       .catch(error => {
-        console.log(error);
+        console.log("hola mundo: ", error);
         this.setState({
           isLoading: false,
           words: [],
@@ -154,7 +174,7 @@ class streaming extends Component {
           <div className="card-header">
             <div>
               <div className="row"> 
-                <h3 id="labelStreaming">Streaming de tweets, count: {this.state.count}</h3>
+                <h3 id="labelStreaming">Streaming de tweets</h3>
               </div>
               <div className="row"> 
                 <FormGroup>
@@ -165,9 +185,9 @@ class streaming extends Component {
                     type="select"
                     onChange={this.onChangeWordSelected}
                   >
-                    <option key={0} selected="" value="1"> {"Ninguno"} </option>
+                   
                     {this.state.words.map( (word,key) => {
-                      return(<option key={key + 1} value={key + 2}> {word} </option>)
+                      return(<option key={key + 1} value={key + 2}> {word.value} </option>)
                     })
                     }
                   </Input>
