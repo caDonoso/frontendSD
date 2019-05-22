@@ -105,18 +105,12 @@ class streaming extends Component {
           isLoading: false,
           words: result.data
         });
-        let select = document.getElementById("dropdownWords"); 
-        for (let i = 0; i < this.state.words.length; i++) {
-          let option = document.createElement("OPTION"), txt = document.createTextNode(this.state.words[i]);
-          option.appendChild(txt);
-          select.insertBefore(option, select.lastChild);
-        }
       })
       .catch(error => {
         console.log(error);
         this.setState({
           isLoading: false,
-          //words: [],
+          words: [],
         });
         alert("No ha sido posible conectarse al servidor para obtener la Bolsa de Palabras.");
       })
